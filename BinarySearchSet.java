@@ -9,13 +9,12 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	
 	private E[] list;
 	
+	// Creates a BinarySearchSet Object with types that implement Comparable
 	public BinarySearchSet (Comparable<? super E> comparable ) {
 		@SuppressWarnings("unchecked")
-		E[] list = (E[])new Object[10];
-		
-		
+		E[] list = (E[])new Object[10];	
 	}
-	
+	// Creates a BinarySearchSet Object with types that implement Comparator
 public BinarySearchSet(Comparator<? super E> comparator) {
 	@SuppressWarnings("unchecked")
 	E[] list = (E[])new Object[10];
