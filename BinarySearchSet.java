@@ -5,20 +5,21 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+@SuppressWarnings("unchecked")
 public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	
+	
 	private E[] list;
-	private Comparator comparator;
+	private Comparator<? super E> comparator;
 	
 	// Creates a BinarySearchSet Object with types that implement Comparable
-	public BinarySearchSet (Comparable<? super E> comparable ) {
-		@SuppressWarnings("unchecked")
-		E[] list = (E[])new Object[10];	
+	public BinarySearchSet () {
+		
+		list = (E[])new Object[10];	
 	}
 	// Creates a BinarySearchSet Object with types that implement Comparator
 public BinarySearchSet(Comparator<? super E> comparator) {
 	this.comparator = comparator;
-	@SuppressWarnings("unchecked")
 	E[] list = (E[])new Object[10];
 		
 	}
@@ -81,7 +82,8 @@ public BinarySearchSet(Comparator<? super E> comparator) {
 	@Override
 	public Iterator<E> iterator() {
 		// TODO Auto-generated method stub
-		return null;
+		
+		return new Iterator<E>()
 	}
 
 	@Override
@@ -122,11 +124,18 @@ public BinarySearchSet(Comparator<? super E> comparator) {
 	
 	private int binarySearch(Comparator<? super E> elementToSearchFor){
 		
-		
-		
-		
 		return 1;
 		
 	}
+	
+	public int myCompare(E left, E right) {
+		if (comparator != null) {
+			return comparator.compare(left, right);
+		}
+		
+		return ((Comparable)left).compareTo(right);
+	}
+	
+	
 
 }
