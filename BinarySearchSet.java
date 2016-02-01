@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	
 	private E[] list;
+	private Comparator comparator;
 	
 	// Creates a BinarySearchSet Object with types that implement Comparable
 	public BinarySearchSet (Comparable<? super E> comparable ) {
@@ -16,6 +17,7 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	}
 	// Creates a BinarySearchSet Object with types that implement Comparator
 public BinarySearchSet(Comparator<? super E> comparator) {
+	this.comparator = comparator;
 	@SuppressWarnings("unchecked")
 	E[] list = (E[])new Object[10];
 		
