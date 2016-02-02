@@ -11,81 +11,125 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	
 	private E[] list;
 	private Comparator<? super E> comparator;
+	private int size;
 	
 	// Creates a BinarySearchSet Object with types that implement Comparable
 	public BinarySearchSet () {
 		
 		list = (E[])new Object[10];	
+		size = 0;
 	}
 	// Creates a BinarySearchSet Object with types that implement Comparator
-public BinarySearchSet(Comparator<? super E> comparator) {
-	this.comparator = comparator;
+	public BinarySearchSet(Comparator<? super E> comparator) {
+		this.comparator = comparator;
 
-	list = (E[])new Object[10];
-		
+		list = (E[]) new Object[10];
+		size = 0;
+
 	}
 
 
 	@Override
 	public Comparator<? super E> comparator() {
-		// TODO Auto-generated method stub
+		if(comparator != null){
+			return comparator;
+		}
 		return null;
 	}
 
 	@Override
 	public E first() throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+		return list[0];
 	}
 
 	@Override
 	public E last() throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+		return list[size - 1];
 	}
 
 	@Override
 	public boolean add(E element) {
-		// TODO Auto-generated method stub
+		if (!contains(element)) {
+			if(size == list.length){
+				resize();
+			}
+			
+			int index = binarySearch(element);
+			for (int i = list.length - 1; i > index; i--) {
+				list[i + 1] = list[i];
+			}
+			list[index] = element;
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends E> elements) {
-		// TODO Auto-generated method stub
+		if (elements.iterator().hasNext()) {
+			while (elements.iterator().hasNext()) {
+				add(elements.iterator().next());
+			}
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		list = (E[])new Object[10];
 	}
 
 	@Override
 	public boolean contains(Object element) {
-		// TODO Auto-generated method stub
+		E other = (E) element;
+		int index = binarySearch(other);
+		if(myCompare(list[index], other) == 0){
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> elements) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method
 		return false;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
+		if(size == 0){
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		
-		return new Iterator<E>()
-	}
+		   return new Iterator<E>() {
+			  int iteratorIndex = 0;
+		      public boolean hasNext() {
+		          if(list[iteratorIndex + 1] != null){
+		        	  return true;
+		          }
+		          return false;
+		      }
+		      public void remove() {
+		        if (iteratorIndex > 0) {
+					BinarySearchSet.this.remove(list[iteratorIndex - 1]);
+					iteratorIndex--;
+				}else{
+		          throw new IllegalStateException();
+				}
+		      }
+		      public E next() {
+		    	  if(hasNext()){
+		    		  return list[iteratorIndex++];
+		    	  }
+		    	  throw new NoSuchElementException();
+		      }
+		   };
+		}
 
 	@Override
 	public boolean remove(Object element) {
@@ -123,10 +167,18 @@ public BinarySearchSet(Comparator<? super E> comparator) {
 		return null;
 	}
 	
-	private int binarySearch(Comparator<? super E> elementToSearchFor){
-		
-		return 1;
-		
+	private int binarySearch(E target) {
+		int index = this.size / 2;
+		for (int i = 0; i < this.size; i *= 2) {
+			if (myCompare(list[index], target) > 0) {
+				index += index / 2;
+			} else {
+				index -= index / 2;
+			}
+		}
+
+		return index;
+
 	}
 	
 	public int myCompare(E left, E right) {
@@ -134,9 +186,18 @@ public BinarySearchSet(Comparator<? super E> comparator) {
 			return comparator.compare(left, right);
 		}
 		
-		return ((Comparable)left).compareTo(right);
+		return ((Comparable<E>)left).compareTo(right);
 	}
 	
-	
+	/**********************************************************
+	 * Doubles the capacity of the list when called.
+	 *********************************************************/
+	private void resize(){
+		E[] newList = (E[])new Object[list.length * 2];
+		for(int i = 0; i < size; i++){
+			newList[i] = list[i];
+		}
+		list = newList;
+	}
 
 }
