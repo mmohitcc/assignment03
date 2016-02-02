@@ -92,8 +92,15 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
 	@Override
 	public boolean containsAll(Collection<?> elements) {
-		// TODO Auto-generated method
-		return false;
+		boolean doesContain = false;
+		while(elements.iterator().hasNext()){
+			if(contains(elements.iterator().next())){
+				doesContain = true;
+			}else {
+				return false;
+			}
+		}
+		return doesContain;
 	}
 
 	@Override
@@ -108,6 +115,7 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	public Iterator<E> iterator() {
 		   return new Iterator<E>() {
 			  int iteratorIndex = 0;
+			  boolean canCallRemove = false;
 		      public boolean hasNext() {
 		          if(list[iteratorIndex + 1] != null){
 		        	  return true;
@@ -115,15 +123,17 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 		          return false;
 		      }
 		      public void remove() {
-		        if (iteratorIndex > 0) {
+		        if (canCallRemove) {
 					BinarySearchSet.this.remove(list[iteratorIndex - 1]);
 					iteratorIndex--;
+					canCallRemove = false;
 				}else{
 		          throw new IllegalStateException();
 				}
 		      }
 		      public E next() {
 		    	  if(hasNext()){
+		    		  canCallRemove = true;
 		    		  return list[iteratorIndex++];
 		    	  }
 		    	  throw new NoSuchElementException();
@@ -145,8 +155,7 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	@Override
