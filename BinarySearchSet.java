@@ -92,15 +92,12 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
 	@Override
 	public boolean containsAll(Collection<?> elements) {
-		boolean doesContain = false;
 		while(elements.iterator().hasNext()){
-			if(contains(elements.iterator().next())){
-				doesContain = true;
-			}else {
+			if(!contains(elements.iterator().next())){
 				return false;
 			}
 		}
-		return doesContain;
+		return true;
 	}
 
 	@Override
