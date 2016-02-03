@@ -104,11 +104,12 @@ public class BinarySearchSetTester {
 		stringSet.add("how");
 		stringSet.add("are");
 		stringSet.add("aardvark");
-		assertEquals(3, stringSet.size());
+		assertEquals(4, stringSet.size());
 		assertEquals("aardvark", stringSet.toArray()[0]);
-		assertEquals("hello", stringSet.toArray()[1]);
-		assertEquals("how", stringSet.toArray()[2]);
-		assertEquals("are", stringSet.toArray()[3]);
+		assertEquals("are", stringSet.toArray()[1]);
+		assertEquals("hello", stringSet.toArray()[2]);
+		assertEquals("how", stringSet.toArray()[3]);
+		
 	}
 
 	@Test

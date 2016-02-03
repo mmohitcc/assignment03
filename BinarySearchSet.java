@@ -53,28 +53,30 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
 	@Override
 	public boolean add(E element) {
-		if(size ==0){
-			list[0] = element;
-			size++;
-			return true;
-			
+			if(size == list.length - 1){
+			resize();
 		}
+			
+//		if(size == 0){
+//			list[0] = element;
+//			size++;
+//			return true;
+//			
+//		}
 		
 		int index = binarySearch(element);
 		
-		if(size == list.length - 1){
-			resize();
-		}
+	
 		
-		if (size > 0) {
-			if (list[index] == null || myCompare(list[index], element) == 0) {
+		if (size > 0 && list[index] != null) {
+			if (myCompare(list[index], element) == 0) {
 				return false;
 			}
 		}
 		
 		
-		for (int i = list.length - 1; i > index; i--) {
-			list[i + 1] = list[i];
+		for (int i = size; i > index; i--) {
+			list[i + 1] = list[i - 1];
 		}
 		list[index] = element;
 		size++;
