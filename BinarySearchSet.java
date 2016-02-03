@@ -38,7 +38,11 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	}
 
 	@Override
-	public E first() throws NoSuchElementException {
+	public E first() {
+		if(size == 0){
+		throw new NoSuchElementException();
+		}
+		
 		return list[0];
 	}
 
@@ -49,20 +53,39 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
 	@Override
 	public boolean add(E element) {
-		if (!contains(element)) {
-			if(size == list.length){
-				resize();
+
+//		if (!contains(element)) {
+			if (size == 0) {
+				list[0] = element;
+				size++;
+				return true;
+			} else if(size == 1){
+				list[1] = element;
+				size++;
+				return true;
+			} else if(size == 2){
+				list[2] = element;
+				size++;
+				return true;
+			} else{
+				if (size == list.length) {
+					resize();
+				}
+				int index = binarySearch(element);
+				for (int i = list.length - 1; i > index; i--) {
+					list[i + 1] = list[i];
+				}
+				list[index] = element;
+				size++;
+				return true;
 			}
-			
-			int index = binarySearch(element);
-			for (int i = list.length - 1; i > index; i--) {
-				list[i + 1] = list[i];
-			}
-			list[index] = element;
-			return true;
-		}
-		return false;
+//		} else {
+//			return false;
+//		}
+
 	}
+
+	
 
 	@Override
 	public boolean addAll(Collection<? extends E> elements) {
@@ -140,16 +163,35 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
 	@Override
 	public boolean remove(Object element) {
-		// TODO Auto-generated method stub
-		return false;
+		E other = (E) element;
+		int index = binarySearch(other);
+		
+		if(size > 0){
+		for( int i = index; i < size; i++){
+			list[i] = list[i+1];
+		}
+		return true;
+		
+		}else {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> elements) {
-		// TODO Auto-generated method stub
+		
+		if (elements.iterator().hasNext()) {
+			while (elements.iterator().hasNext()) {
+				remove(elements.iterator().next());
+			}
+			return true;
+		}
+		
 		return false;
 	}
 
+	
+	
 	@Override
 	public int size() {
 		return size;
@@ -157,33 +199,52 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+			return list;
 	}
 
-	@Override
-	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public E next() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public boolean hasNext() {
+//		//
+//		return false;
+//	}
+//
+//	@Override
+//	public E next() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+	
 	
 	private int binarySearch(E target) {
-		int index = this.size / 2;
-		for (int i = 0; i < this.size; i *= 2) {
-			if (myCompare(list[index], target) > 0) {
-				index += index / 2;
-			} else {
-				index -= index / 2;
-			}
-		}
+//		int index = this.size / 2;
+//		for (int i = 0; i < this.size; i *= 2) {
+//			if (myCompare(list[index], target) > 0) {
+//				index += index / 2;
+//			} else {
+//				index -= index / 2;
+//			}
+//		}
 
-		return index;
+	//	return index;
+		
+		int indexLow = 0;
+		int indexHigh = size -1;
+		
+		while(indexLow <= indexHigh) {
+			int mediumIndex = (indexLow + indexHigh) / 2;
+			if(myCompare(list[mediumIndex], target) > 0) {
+				indexHigh = mediumIndex -1;
+			}
+			else if(myCompare(list[mediumIndex], target) < 0) {
+				indexLow = mediumIndex +1;
+			}
+			else{
+				return mediumIndex;
+			}
+			
+		}
+		
+		return -1;
 
 	}
 	
