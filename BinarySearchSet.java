@@ -53,36 +53,32 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
 	@Override
 	public boolean add(E element) {
-
-//		if (!contains(element)) {
-			if (size == 0) {
-				list[0] = element;
-				size++;
-				return true;
-			} else if(size == 1){
-				list[1] = element;
-				size++;
-				return true;
-			} else if(size == 2){
-				list[2] = element;
-				size++;
-				return true;
-			} else{
-				if (size == list.length) {
-					resize();
-				}
-				int index = binarySearch(element);
-				for (int i = list.length - 1; i > index; i--) {
-					list[i + 1] = list[i];
-				}
-				list[index] = element;
-				size++;
-				return true;
+		if(size ==0){
+			list[0] = element;
+			size++;
+			return true;
+			
+		}
+		
+		int index = binarySearch(element);
+		
+		if(size == list.length - 1){
+			resize();
+		}
+		
+		if (size > 0) {
+			if (list[index] == null || myCompare(list[index], element) == 0) {
+				return false;
 			}
-//		} else {
-//			return false;
-//		}
-
+		}
+		
+		
+		for (int i = list.length - 1; i > index; i--) {
+			list[i + 1] = list[i];
+		}
+		list[index] = element;
+		size++;
+		return true;
 	}
 
 	
@@ -216,35 +212,30 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	
 	
 	private int binarySearch(E target) {
-//		int index = this.size / 2;
-//		for (int i = 0; i < this.size; i *= 2) {
-//			if (myCompare(list[index], target) > 0) {
-//				index += index / 2;
-//			} else {
-//				index -= index / 2;
-//			}
-//		}
-
-	//	return index;
-		
 		int indexLow = 0;
 		int indexHigh = size -1;
 		
 		while(indexLow <= indexHigh) {
 			int mediumIndex = (indexLow + indexHigh) / 2;
-			if(myCompare(list[mediumIndex], target) > 0) {
-				indexHigh = mediumIndex -1;
+			if(myCompare(list[mediumIndex], target) == 0) {
+				return mediumIndex;
 			}
 			else if(myCompare(list[mediumIndex], target) < 0) {
 				indexLow = mediumIndex +1;
 			}
 			else{
-				return mediumIndex;
+				indexHigh = mediumIndex -1;
 			}
 			
 		}
 		
-		return -1;
+		if (indexHigh < 0) {
+			return 0;
+		} else if(indexLow == size){
+			return size;
+		}
+		
+		return indexLow;
 
 	}
 	
