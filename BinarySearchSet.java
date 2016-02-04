@@ -48,6 +48,9 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
 	@Override
 	public E last() throws NoSuchElementException {
+		if(size ==0){
+			throw new NoSuchElementException();
+		}
 		return list[size - 1];
 	}
 
@@ -57,12 +60,7 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 			resize();
 		}
 			
-//		if(size == 0){
-//			list[0] = element;
-//			size++;
-//			return true;
-//			
-//		}
+
 		
 		int index = binarySearch(element);
 		
@@ -75,15 +73,29 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 		}
 		
 		
-		for (int i = size; i > index; i--) {
-			list[i + 1] = list[i - 1];
-		}
-		list[index] = element;
-		size++;
+		if (size > 0) {
+			E temp1 = list[index];
+			E temp2;
+			list[index] = element;
+			size++;
+			for (int i = index + 1; i < size; i += 2) {
+
+				temp2 = list[i];
+				list[i] = temp1;
+				temp1 = list[i + 1];
+				list[i + 1] = temp2;
+
+			} 
+			}else{
+				list[0] = element;
+				size++;
+			}
+		
 		return true;
-	}
 
 	
+	}
+
 
 	@Override
 	public boolean addAll(Collection<? extends E> elements) {
@@ -99,6 +111,7 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	@Override
 	public void clear() {
 		list = (E[])new Object[10];
+		size = 0;
 	}
 
 	@Override
@@ -168,6 +181,8 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 		for( int i = index; i < size; i++){
 			list[i] = list[i+1];
 		}
+		list[size - 1] = null;
+		size--;
 		return true;
 		
 		}else {
@@ -261,3 +276,5 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 	}
 
 }
+
+	
