@@ -36,7 +36,6 @@ public class BinarySearchSetTester {
         }
      }
           
-        
     protected class ComparatorInts implements Comparator<Integer> {
 
         /**
@@ -498,6 +497,5 @@ public class BinarySearchSetTester {
             assertTrue(intSet.add(i));
         }
     }
-
-    
+   
 }

@@ -35,7 +35,6 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
 
     }
 
-
     @Override
     public Comparator<? super E> comparator() {
         if(comparator != null){
@@ -140,8 +139,6 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
         return true;
     }
 
-    
-    
     @Override
     public boolean isEmpty() {
         if(size == 0){
@@ -227,8 +224,6 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
         return false;
     }
 
-    
-    
     @Override
     public int size() {
         return size;
@@ -239,7 +234,6 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
             return list;
     }
 
-    
     /**
      * @param target
      * 			- The object to find index of
