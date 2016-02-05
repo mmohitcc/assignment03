@@ -60,24 +60,21 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
             resize();
         }
             
-
-        
         int index = binarySearch(element);
         
-    
-        
+        // Return false if the element exists in the set
         if (size > 0 && list[index] != null) {
             if (myCompare(list[index], element) == 0) {
                 return false;
             }
         }
         
-        
         if (size > 0) {
             E temp1 = list[index];
             E temp2;
             list[index] = element;
             size++;
+            // Add new element and shift any other elements to the right
             for (int i = index + 1; i < size; i += 2) {
 
                 temp2 = list[i];
@@ -92,10 +89,7 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
             }
         
         return true;
-
-    
     }
-
 
     @Override
     public boolean addAll(Collection<? extends E> elements) {
@@ -186,6 +180,7 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
         
         
         if (size > 0) {
+        	// Prohibits ArrayIndexOutOfBoundsException when an elements needs to be added at the end of set
             if (index < size) {
                 if (myCompare(list[index], other) == 0) {
                     for (int i = index; i < size; i++) {
@@ -238,7 +233,12 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
     }
 
     
-    
+    /**
+     * @param target
+     * 			- The object to find index of
+     * @return
+     * 			- The index where the target is or where it should be placed
+     */
     private int binarySearch(E target) {
         int indexLow = 0;
         int indexHigh = size -1;
@@ -257,6 +257,7 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
             
         }
         
+        // Determine what to return if the element is not contained in the set
         if (indexHigh < 0) {
             return 0;
         } else if(indexLow == size){
@@ -266,7 +267,15 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
         return indexLow;
 
     }
-    
+    /**
+     * Compares two E objects using either Comparable or a Comparator
+     * 
+     * @param left
+     * @param right
+     * @return
+     * 		-Returns a negative value if left is smaller than right. Returns a positive
+     * 		 value if left is larger than right. Returns 0 if left and right are equal.   
+     */
     public int myCompare(E left, E right) {
         if (comparator != null) {
             return comparator.compare(left, right);
@@ -275,9 +284,9 @@ public class BinarySearchSet<E> implements SortedSet<E>, Iterable<E> {
         return ((Comparable<E>)left).compareTo(right);
     }
     
-    /**********************************************************
+    /**
      * Doubles the capacity of the list when called.
-     *********************************************************/
+     */
     private void resize(){
         E[] newList = (E[])new Object[list.length * 2];
         for(int i = 0; i < size; i++){
