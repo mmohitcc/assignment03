@@ -1,3 +1,9 @@
+/**
+ * This class performs timing experiments on our BinarySearchSet's contains() and add() methods
+ * 
+ * Authors: Ryan Sargent, Kent Allen & Mohit Chaudhary
+ * Last Modified: Feb. 4, 2016
+ */
 package assignment03;
 
 import java.io.File;

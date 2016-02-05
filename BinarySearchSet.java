@@ -1,3 +1,10 @@
+/**
+ * This class represents a generic Set that automatically sorts the objects being
+ * added to it using either a Comparator or with the type's Comparable
+ * 
+ * Authors: Kent Allen & Mohit Chaudhary
+ * Last Modified: Feb. 4, 2016
+ */
 package assignment03;
 
 import java.util.Collection;

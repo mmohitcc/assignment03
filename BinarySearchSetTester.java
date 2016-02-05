@@ -1,3 +1,9 @@
+/**
+ * This class extensively tests our BinarySearchSet class and all of its methods
+ * 
+ * Authors: Kent Allen & Mohit Chaudhary
+ * Last Modified: Feb. 4, 2016
+ */
 package assignment03;
 
 import static org.junit.Assert.*;
